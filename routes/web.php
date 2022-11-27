@@ -20,3 +20,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/admin', 'HomeController@index')->middleware('auth')->name('admin.home');
+Route::post('/admin', 'HomeController@store')->name('admin.store');
+Route::post('/')->name('guest.home');
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
+
+    Route::resource('contacts', 'ContactController');
+    Route::resource('lessons', 'LessonController');
+
+    Route::get('/{any}', function(){ 
+        abort('404');
+    })->where('any', '.*');
+});
