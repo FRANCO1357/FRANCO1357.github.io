@@ -37,22 +37,24 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required|string|min:5|max:50|unique:posts',
-        //     'content' => 'required|string',
-        //     'image' => 'nullable|image|mimes:jpeg,jpg,png',
-        //     'category_id' => 'nullable|exists:categories,id',
-        //     'tags' => 'nullable|exists:tags,id',
-        // ],
-        // [
-        //     'title.required' => 'Il titolo è obbligatorio',
-        //     'title.min' => 'Il titolo deve avere minimo :min caratteri',
-        //     'title.max' => 'Il titolo deve avere massimo :max caratteri',
-        //     'title.unique' => "Il titolo $request->title esiste già",
-        //     'content.required' => 'Il contenuto è obbligatorio',
-        //     'category_id.exixts' => 'Categoria non esistente',
-        //     'tags.exists' => 'Tag inesistente'
-        // ]);
+        $request->validate([
+            'title' => 'required|string|min:5|max:50',
+            'price' => 'required|numeric',
+            'description' => 'required|min:5|max:10000',
+            'image' => 'required',
+        ],
+        [
+            'title.required' => 'Il titolo è obbligatorio',
+            'title.min' => 'Il titolo deve avere minimo :min caratteri',
+            'title.max' => 'Il titolo deve avere massimo :max caratteri',
+            'description.required' => 'La descrizione è obbligatoria',
+            'description.min' => 'La descrizione deve avere minimo :min caratteri',
+            'description.max' => 'La descrizione deve avere massimo :max caratteri',
+            'price.required' => 'Il prezzo è obbligatorio',
+            'price.numeric' => 'Il prezzo deve essere un numero',
+            'image.required' => 'L\'immagine è obbligatoria',
+
+        ]);
 
         $data = $request->all();
 
@@ -73,7 +75,7 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        //
+        return view('admin.lessons.show', compact('lesson')); 
     }
 
     /**
@@ -84,7 +86,7 @@ class LessonController extends Controller
      */
     public function edit(Lesson $lesson)
     {
-        //
+        return view('admin.lessons.edit', compact('lesson')); 
     }
 
     /**
@@ -96,7 +98,30 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|min:5|max:50',
+            'price' => 'required|numeric',
+            'description' => 'required|min:5|max:10000',
+            'image' => 'required',
+        ],
+        [
+            'title.required' => 'Il titolo è obbligatorio',
+            'title.min' => 'Il titolo deve avere minimo :min caratteri',
+            'title.max' => 'Il titolo deve avere massimo :max caratteri',
+            'description.required' => 'La descrizione è obbligatoria',
+            'description.min' => 'La descrizione deve avere minimo :min caratteri',
+            'description.max' => 'La descrizione deve avere massimo :max caratteri',
+            'price.required' => 'Il prezzo è obbligatorio',
+            'price.numeric' => 'Il prezzo deve essere un numero',
+            'image.required' => 'L\'immagine è obbligatoria',
+
+        ]);
+
+        $data = $request->all();
+
+        $lesson->update($data);
+
+        return redirect()->route('admin.lessons.show', $lesson)->with('message', 'Lezione modificata con successo')->with('type', 'success');
     }
 
     /**
@@ -107,6 +132,8 @@ class LessonController extends Controller
      */
     public function destroy(Lesson $lesson)
     {
-        //
+        $lesson->delete();
+
+        return redirect()->route('admin.lessons.index')->with('message', 'La lezione è stata eliminata con successo')->with('type', 'danger');
     }
 }

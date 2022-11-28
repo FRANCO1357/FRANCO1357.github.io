@@ -14,127 +14,21 @@
         {{-- font awesome --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-        <!-- Styles -->
-        <style>
-
-            body{
-                font-family: 'Darker Grotesque', sans-serif;
-            }
-
-            header{
-                border-bottom: 1px solid black;
-            }
-            header img{
-                height: 40px;
-            }
-
-            .jumbotron{
-                border-bottom: 1px solid black;
-            }
-
-            .jumbotron img{
-                width: 100%;
-            }
-
-            .jumbotron-left{
-                width: 40%;
-                padding: 0 30px;
-            }
-
-            .jumbotron-right{
-                width: 60%;
-                padding: 0 30px;
-            }
-
-            /* marquee */
-
-            .marquee{
-                width: 100%;
-                height: 30px;
-                overflow: hidden;
-                white-space: nowrap;
-                margin-top: 10px;
-            }
-
-            .marquee div{
-                animation: animate 40s linear infinite;
-                transform: translate(110vW, 0);
-                display: inline-block;
-                font-size: 16px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100%;
-            }
-
-            .marquee span{
-                margin: 0 12px;
-            }
-
-            @keyframes animate{
-                100%{
-                    transform: translate(-100vW, 0);
-                }
-            }
-
-            /* button */
-
-            .btn{
-                background-color: black;
-                color: white;
-                padding: 10px 20px;
-                transition: 0.5s;
-            }
-
-            .btn:hover{
-                transform: scale(1.2);
-                color: white;
-            }
-
-            footer{
-                background-color: black;
-            }
-
-            .footer-left{
-                width: 50%;
-            }
-            .footer-right{
-                width: 50%;
-                border-left: 1px solid white
-            }
-
-            .card{
-                opacity: 1;
-                animation-name: fadeInOpacity;
-                animation-iteration-count: 1;
-                animation-timing-function: ease-in;
-                animation-duration: 3s;
-            }
-
-            @keyframes fadeInOpacity {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        
-}
-
-        </style>
     </head>
     <body class="bg-white">
         <header class="p-3 d-flex justify-content-between align-items-center">
             <div class="left-menu d-flex">
                 <img src="{{url('../images/logo-1.png')}}" alt="">
                 <ul class="list-unstyled d-flex m-0">
-                    <li class="nav-item"><a class="nav-link text-reset" href="#principianti">Principianti</a></li>
-                    <li class="nav-item"><a class="nav-link text-reset" href="">Intermedi</a></li>
-                    <li class="nav-item"><a class="nav-link text-reset" href="">Avanzati</a></li>
+                    @forelse ($lessons as $lesson)
+                    <li class="nav-item"><a class="nav-link text-reset" href="#{{$lesson->title}}">{{$lesson->title}}</a></li>
+                    @empty
+                        Nessuna Lezione disponibile
+                    @endforelse
                 </ul>
             </div>
             @if (Route::has('login'))
@@ -153,7 +47,7 @@
         </header>
 
         {{-- main --}}
-        <main>
+        <main class="pb-5">
 
             {{-- jumbotron --}}
             <div class="jumbotron rounded-0 bg-white m-0 d-flex">
@@ -179,17 +73,19 @@
                 <div class="content">
 
                     {{-- cards offer --}}
-                    <div id="principianti" class="card my-5 border-0 rounded-0 shadow">
+                    @forelse ($lessons as $lesson)
+                    <div id="{{$lesson->title}}" class="card my-5 border-0 rounded-0 shadow">
+                        <div>
                         <div class="row no-gutters">
                           <div class="col-md-4 p-3">
-                            <img class="img-fluid" src="{{url('../images/ski-freestyle-1.jpg')}}" alt="">
+                            <img class="img-fluid" src="{{$lesson->image}}" alt="{{$lesson->title}}">
                           </div>
                           <div class="col-md-8">
                             <div class="card-body">
-                              <h5 class="card-title">Lezioni per principanti</h5>
-                              <p class="card-text">Le lezioni di sci per principianti sono organizzate per chiunque non abbia mai sciato prima d’ora e quindi parte da zero. Si può imparare a sciare a qualsiasi età, posto che non si abbiano problemi fisici; quindi alle lezioni di sci per principianti non partecipano solo bambini e ragazzi, ma chiunque si voglia approcciare per la prima volta agli sport sulla neve e abbia bisogno di iniziare dai fondamenti, con l’aiuto di istruttori esperti e competenti. L’età minima prevista è di 5 anni e non esiste un’età massima per imparare, chiunque può partecipare ai corsi della scuola di sci di Cortina oppure iscriversi alle lezioni intermedie-avanzate.</p>
+                              <h5 class="card-title">{{$lesson->title}}</h5>
+                              <p class="card-text">{{$lesson->description}}</p>
                               <div class="card-bottom d-flex justify-content-between">
-                                <p class="card-text"><small class="text-muted">50€ / ora</small></p>
+                                <p class="card-text"><small class="text-muted">{{$lesson->price}}€ / ora</small></p>
                                 <a class="btn rounded-0" href="#contact-form">Prenota</a>
                               </div>
                             </div>
@@ -197,6 +93,9 @@
                         </div>
                       </div>
                     </div>
+                    @empty
+                        Nessuna lezione disponibile
+                    @endforelse
                 </div>
             </div>
         </main>
@@ -224,7 +123,7 @@
                             </div>
                     @endif
 
-                    <form id="contact-form" action="{{route('admin.store')}}" method="POST">
+                    <form id="contact-form" action="{{route('guest.store')}}" method="POST">
 
                         @csrf
                         <div class="row align-items-center">

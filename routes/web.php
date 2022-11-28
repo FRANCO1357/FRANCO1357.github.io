@@ -13,15 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('guest/home');
-});
+// Route::get('/', function () {
+//     return view('guest/home');
+// });
+
+Route::get('/', 'Guest\HomeController@index')->name('guest.home');
+Route::post('/', 'Guest\HomeController@store')->name('guest.store');
 
 Auth::routes();
 
 Route::get('/admin', 'HomeController@index')->middleware('auth')->name('admin.home');
-Route::post('/admin', 'HomeController@store')->name('admin.store');
-Route::post('/')->name('guest.home');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
 

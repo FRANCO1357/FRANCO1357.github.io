@@ -25,19 +25,17 @@
            <tr>
                <th scope="row">{{$lesson->id}}</th>
                <td>{{$lesson->title}}</td>
-               <td>{{$lesson->price}}</td>
+               <td>{{$lesson->price}}€ / ora</td>
                <td>{{$lesson->created_at}}</td>
                <td>{{$lesson->updated_at}}</td>
                <td class="d-flex justify-content-end">
                    <a class="btn btn-sm btn-primary ml-2" href="{{route('admin.lessons.show', $lesson)}}"><i class="fa-solid fa-eye mr-2"></i>Vedi</a>
-                   @if($lesson->user_id === Auth::id())
                    <a class="btn btn-sm btn-warning ml-2" href="{{route('admin.lessons.edit', $lesson)}}"><i class="fa-solid fa-pencil mr-2"></i>Modifica</a>
                    <form action="{{route('admin.lessons.destroy', $lesson->id)}}" method="POST" class="delete-form">
                        @csrf
                        @method('DELETE')
                        <button class="btn btn-sm btn-danger ml-2" type="submit"><i class="fa-solid fa-trash mr-2"></i>Elimina</button>
                    </form>
-                   @endif
                </td>
              </tr> 
            @empty
