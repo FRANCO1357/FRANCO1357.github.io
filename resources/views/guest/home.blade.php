@@ -59,7 +59,7 @@
                     <a class="btn rounded-0 mt-3" href="#contact-form"><span>Contattaci</span></a>
                 </div>
                 <div class="jumbotron-right pt-0">
-                    <img src="{{url('../images/audi-nines.jpg')}}" alt="">
+                    <img src="{{url('../images/audi-nines.jpg')}}" alt="audi-nines">
                 </div>   
             </div>
 
